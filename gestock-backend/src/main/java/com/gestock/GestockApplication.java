@@ -8,5 +8,7 @@ public class GestockApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(GestockApplication.class, args);
+
+        System.out.println("Trabajando");
     }
 }

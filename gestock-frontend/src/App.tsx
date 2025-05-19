@@ -1,30 +1,28 @@
 import { useEffect, useState } from 'react';
-import { getProductos, crearProducto, Producto } from './api/productos';
+import { getArticulos, crearArticulo, Articulo } from './api/articulos';
 
 function App() {
-  const [productos, setProductos] = useState<Producto[]>([]);
-  const [nombre, setNombre] = useState('');
-  const [precio, setPrecio] = useState('');
+  const [articulos, setArticulos] = useState<Articulo[]>([]);
+  const [descripcion_articulo, setDescripcion_articulo] = useState('');
+
 
   useEffect(() => {
-    cargarProductos();
+    cargarArticulos();
   }, []);
 
-  const cargarProductos = () => {
-    getProductos().then(setProductos).catch(console.error);
+  const cargarArticulos = () => {
+    getArticulos().then(setArticulos).catch(console.error);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const nuevoProducto: Producto = {
-      nombre,
-      precio: parseFloat(precio)
+    const nuevoArticulo: Articulo = {
+      descripcion_articulo,
     };
     try {
-      await crearProducto(nuevoProducto);
-      setNombre('');
-      setPrecio('');
-      cargarProductos();
+      await crearArticulo(nuevoArticulo);
+      setDescripcion_articulo('');
+      cargarArticulos();
     } catch (error) {
       console.error(error);
     }
@@ -32,22 +30,18 @@ function App() {
 
   return (
     <div style={{ padding: '2rem' }}>
-      <h1>Lista de productos</h1>
+      <h1>Lista de Articulos</h1>
       <ul>
-        {productos.map((p) => (
-          <li key={p.id}>{p.nombre} - ${p.precio}</li>
+        {articulos.map((p) => (
+          <li key={p.codigo_articulo}>{p.descripcion_articulo}</li>
         ))}
       </ul>
 
-      <h2>Agregar nuevo producto</h2>
+      <h2>Agregar nuevo Articulo</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Nombre:</label>
-          <input value={nombre} onChange={e => setNombre(e.target.value)} required />
-        </div>
-        <div>
-          <label>Precio:</label>
-          <input type="number" value={precio} onChange={e => setPrecio(e.target.value)} required />
+          <label>Descripcion:</label>
+          <input value={descripcion_articulo} onChange={e => setDescripcion_articulo(e.target.value)} required />
         </div>
         <button type="submit">Crear</button>
       </form>
